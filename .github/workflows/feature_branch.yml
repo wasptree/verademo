@@ -96,3 +96,18 @@ jobs:
         uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: veracode-results.sarif
+
+  import-issues:
+    needs: pipeline-scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: get scan results
+        uses: actions/download-artifact@v2
+        with:
+          name: filtered-results
+
+      - name: import flaws as issues
+        uses: buzzcode/veracode-flaws-to-issues@v1
+        with:
+          scan-results-json: 'filtered_results.json'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
