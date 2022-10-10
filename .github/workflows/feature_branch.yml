@@ -79,7 +79,7 @@ jobs:
       - name: get scan results
         uses: actions/download-artifact@v2
         with:
-          name: PipelineScanResults
+          name: Veracode Pipeline-Scan Results
       - name: Convert pipeline scan output to SARIF format 
         id: convert
         uses: veracode/veracode-pipeline-scan-results-to-sarif@v0.1.5
