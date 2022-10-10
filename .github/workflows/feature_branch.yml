@@ -75,11 +75,15 @@ jobs:
   import-findings-to-code-scanning-alerts:
     needs: pipeline_scan
     runs-on: ubuntu-latest
-    steps:  
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+
       - name: get scan results
         uses: actions/download-artifact@v2
         with:
-          name: Veracode Pipeline-Scan Results
+          name: "Veracode Pipeline-Scan Results"
+      
       - name: Convert pipeline scan output to SARIF format 
         id: convert
         uses: veracode/veracode-pipeline-scan-results-to-sarif@v0.1.5
@@ -87,6 +91,8 @@ jobs:
           pipeline-results-json: results.json
           source-base-path-1: "^com/veracode:src/main/java/com/veracode"
           source-base-path-2: "^WEB-INF:src/main/webapp/WEB-INF"
-      - uses: github/codeql-action/upload-sarif@v1
+      
+      - name: Upload SARIF File
+        uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: veracode-results.sarif
