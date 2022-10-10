@@ -98,7 +98,7 @@ jobs:
           sarif_file: veracode-results.sarif
 
   import-issues:
-    needs: pipeline-scan
+    needs: pipeline_scan
     runs-on: ubuntu-latest
     steps:
       - name: get scan results
