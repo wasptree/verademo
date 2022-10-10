@@ -73,5 +73,3 @@ jobs:
             vid: ${{secrets.VID}}
             vkey: ${{secrets.VKEY}}
             file: "verademo.war"
-            store_baseline_file: false
-            baseline_file: "veracode-pipeline-scan-baseline-file.json"
