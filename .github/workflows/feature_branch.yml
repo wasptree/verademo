@@ -101,10 +101,14 @@ jobs:
     needs: pipeline_scan
     runs-on: ubuntu-latest
     steps:
-      - name: get scan results
-        uses: actions/download-artifact@v2
-        with:
-          name: filtered-results
+
+      - name: checkout repo
+        uses: actions/checkout@v2
+
+      #- name: get scan results
+      #  uses: actions/download-artifact@v2
+      #  with:
+      #    name: filtered_results.json
 
       - name: import flaws as issues
         uses: buzzcode/veracode-flaws-to-issues@v1
