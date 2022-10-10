@@ -1,16 +1,14 @@
 name: Development Branch Workflow
 
-
 on:
   push:
     branches: [ development ]
   pull_request:
     branches: [ development ]
 
-
 jobs:
   # This step will build the maven application
-  build:
+  build_app:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -29,81 +27,8 @@ jobs:
       with:
         name: verademo.war
         path: target/verademo.war
-        
 
-  # This step will run the Veracode pipeline scan 
-  pipeline-scan:
-    needs: build
-    runs-on: ubuntu-latest
-    container: 
-      image: veracode/pipeline-scan:latest
-      options: --user root
-    steps:
-      - name: get archive
-        uses: actions/download-artifact@v2
-        with:
-          name: verademo.war
-          path: /tmp
-      - name: pipeline-scan
-        run: | 
-          java -jar /opt/veracode/pipeline-scan.jar \
-            -vid "${{secrets.VERACODE_API_ID}}" \
-            -vkey "${{secrets.VERACODE_API_KEY}}" \
-            --fail_on_severity="Very High, High" \
-            --file /tmp/verademo.war \
-            -jf results.json \
-            -fjf filtered_results.json 
-        continue-on-error: true
-      - name: save standard results
-        uses: actions/upload-artifact@v1
-        with:
-          name: PipelineScanResults
-          path: results.json
-      - name: save filtered results
-        uses: actions/upload-artifact@v1
-        with:
-          name: filtered-results
-          path: filtered_results.json
 
-        
-  # Convert Pipeline scan results to the SARFI format  
-  import-findings-to-code-scanning-alerts:
-    needs: pipeline-scan
-    runs-on: ubuntu-latest
-    steps:  
-      - name: get scan results
-        uses: actions/download-artifact@v2
-        with:
-          name: PipelineScanResults
-      - name: Convert pipeline scan output to SARIF format 
-        id: convert
-        uses: veracode/veracode-pipeline-scan-results-to-sarif@v0.1.5
-        with:
-          pipeline-results-json: results.json
-          source-base-path-1: "^com/veracode:src/main/java/com/veracode"
-          source-base-path-2: "^WEB-INF:src/main/webapp/WEB-INF"
-      - uses: github/codeql-action/upload-sarif@v1
-        with:
-          sarif_file: veracode-results.sarif
-        
-  # Create issues from piepline scan
-  import-issues:
-    needs: pipeline-scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: get scan results
-        uses: actions/download-artifact@v2
-        with:
-          name: filtered-results
-
-      - name: import flaws as issues
-        uses: buzzcode/veracode-flaws-to-issues@v1
-        with:
-          scan-results-json: 'filtered_results.json'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-        
-  # Run a Software Composition Analysis scan
   software-composition-analysis:
     runs-on: ubuntu-latest
     steps:
@@ -123,3 +48,30 @@ jobs:
       with:
         name: SCAScanResults
         path: sca_output.txt
+
+  pipeline_scan:
+      # needs the build step before this job will start running
+      needs: build_app
+      runs-on: ubuntu-latest
+      name: pipeline scan
+
+      steps:
+        - name: checkout repo
+          uses: actions/checkout@v2
+        
+        # get the compiled binary from a previous job
+        - name: get archive
+          uses: actions/download-artifact@v2
+          with:
+            name: verademo.war
+
+        # run the pipeline scan action
+        - name: pipeline-scan action step
+          id: pipeline-scan
+          uses: veracode/Veracode-pipeline-scan-action@latest
+          with:
+            vid: ${{secrets.VID}}
+            vkey: ${{secrets.VKEY}}
+            file: "verademo.war"
+            store_baseline_file: false
+            baseline_file: "veracode-pipeline-scan-baseline-file.json"
