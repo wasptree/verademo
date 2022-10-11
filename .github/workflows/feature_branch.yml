@@ -118,3 +118,5 @@ jobs:
         with:
           scan-results-json: '/tmp/filtered_results.json'
           source_base_path_1: '/src/main/webapp/'
+          source-base-path-1: "^com/veracode:src/main/java/com/veracode"
+          source-base-path-2: "^WEB-INF:src/main/webapp/WEB-INF"
