@@ -112,9 +112,11 @@ jobs:
       with:
         name: SCAContainerResults
         path: sca_output.txt
-  
+
   deploy_application:
     name: Deploy application to staging
     runs-on: ubuntu-latest
     needs: scan_container
-    - run: echo "Docker container deployed to staging"
+    steps:
+      - name: Deploy docker image to staging environment
+        run: echo "Docker container deployed to staging"
