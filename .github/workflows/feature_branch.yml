@@ -118,8 +118,4 @@ jobs:
         with:
           scan-results-json: '/tmp/filtered_results.json'
           source_base_path_1: "^com/veracode:src/main/java/com/veracode"
-<<<<<<< HEAD
           source_base_path_2: "^WEB-INF:src/main/webapp/WEB-INF"
-=======
-          source_base_path_2: "^WEB-INF:src/main/webapp/WEB-INF"
->>>>>>> feature
