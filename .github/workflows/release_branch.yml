@@ -129,4 +129,4 @@ jobs:
       image: docker://wasptree/veracode-dast-trigger:latest
     steps: 
       - name: Trigger the dast scan
-        run: veracode-dast-trigger -vid {{$secrets.VID}} -vkey {{secrets.VKEY}}  -scan verademo_web
+        run: veracode-dast-trigger -vid ${{secrets.VID}} -vkey ${{secrets.VKEY}}  -scan verademo_web
