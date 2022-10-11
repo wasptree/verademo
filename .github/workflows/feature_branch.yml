@@ -118,5 +118,5 @@ jobs:
         uses: julz0815/veracode-flaws-to-issues@beta-0.0.105
         with:
           scan-results-json: '/tmp/filtered_results.json'
-          #source_base_path_1: "com/veracode:src/main/java/com/veracode"
-          #source_base_path_2: "WEB-INF:src/main/webapp/WEB-INF"
+          source_base_path_1: "com/veracode:src/main/java/com/verademo"
+          source_base_path_2: "WEB-INF:src/main/webapp/WEB-INF"
