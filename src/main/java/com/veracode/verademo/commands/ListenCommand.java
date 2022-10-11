@@ -40,14 +40,14 @@ public class ListenCommand implements BlabberCommand {
 			ResultSet result = sqlStatement.executeQuery(sqlQuery);
 			result.next();
 			
-			/* START BAD CODE */
+			/* START BAD CODE -----*/
 			String event = username + " started listening to " + blabberUsername + "(" + result.getString(1) + ")";
 			sqlQuery = "INSERT INTO users_history (blabber, event) VALUES (\"" + username + "\", \"" + event + "\")";
 			logger.info(sqlQuery);
 			sqlStatement.execute(sqlQuery);
 			/* END BAD CODE */
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block 
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
