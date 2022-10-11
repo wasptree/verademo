@@ -1,4 +1,4 @@
-name: Development Branch Workflow
+name: Release Branch Workflow
 
 on:
   push:
@@ -9,6 +9,7 @@ on:
 jobs:
   # This step will build the maven application
   build_app:
+    name: Build Application with Maven
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -31,6 +32,7 @@ jobs:
 
 
   software-composition-analysis:
+    name: Software Composition Analysis
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -94,7 +96,7 @@ jobs:
           path: verademo_github_sbom.json
 
   build_container:
-    name: Build docker container
+    name: Build Application Into Docker Container
     needs: static_analysis
     runs-on: ubuntu-latest
     steps:
@@ -102,6 +104,7 @@ jobs:
         run: echo "built new container"
   
   scan_container:
+    name: Scan Built Container Image
     runs-on: ubuntu-latest
     needs: build_container
     steps:
@@ -115,7 +118,7 @@ jobs:
         path: sca_container_output.txt
 
   deploy_application:
-    name: Deploy application to staging
+    name: Deploy Application To Testing Environment
     runs-on: ubuntu-latest
     needs: scan_container
     steps:
@@ -123,7 +126,7 @@ jobs:
         run: echo "Docker container deployed to staging"
 
   start_dast_scan:
-    name: Schedule dast scan to run
+    name: Start DAST Scan On Testing
     needs: deploy_application
     runs-on: ubuntu-latest
     container:
