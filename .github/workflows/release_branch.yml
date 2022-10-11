@@ -79,7 +79,7 @@ jobs:
           cat > ~/.veracode/credentials << EOF
           [default]
           veracode_api_key_id = ${{secrets.VID}}
-          veracode_api_key_secret = ${{secrets.VKEY}
+          veracode_api_key_secret = ${{secrets.VKEY}}
           EOF
       - name: Generate SBOM
         run: |
