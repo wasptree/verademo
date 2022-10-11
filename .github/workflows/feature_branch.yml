@@ -117,3 +117,4 @@ jobs:
         uses: julz0815/veracode-flaws-to-issues@beta-0.0.103
         with:
           scan-results-json: '/tmp/filtered_results.json'
+          source_base_path_1: '/src/main/webapp/'
