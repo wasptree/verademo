@@ -114,7 +114,7 @@ jobs:
           path: /tmp
 
       - name: import flaws as issues
-        uses: julz0815/veracode-flaws-to-issues@beta-0.0.103
+        uses: julz0815/veracode-flaws-to-issues@beta-0.0.105
         with:
           scan-results-json: '/tmp/filtered_results.json'
           source-base-path_1: "^com/veracode:src/main/java/com/veracode"
