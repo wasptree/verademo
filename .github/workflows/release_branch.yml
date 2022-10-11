@@ -127,5 +127,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: docker://wasptree/veracode-dast-trigger:latest
-    - name: Trigger the dast scan
-      run: veracode-dast-trigger -vid {{$secrets.VID}} -vkey {{secrets.VKEY}}  -scan verademo_web
+    steps: 
+      - name: Trigger the dast scan
+        run: veracode-dast-trigger -vid {{$secrets.VID}} -vkey {{secrets.VKEY}}  -scan verademo_web
