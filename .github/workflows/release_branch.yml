@@ -95,6 +95,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Build new container image
-      - run: echo "built new container"
+        run: echo "built new container"
   
 
