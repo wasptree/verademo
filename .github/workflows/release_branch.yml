@@ -105,7 +105,7 @@ jobs:
     needs: build_container
     steps:
     - uses: actions/checkout@v2
-    - run: curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan --image wasptree/verademo-web | tee sca_container_output.txt
+    - run: curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan --image wasptree/vampi | tee sca_container_output.txt
       env:
         SRCCLR_API_TOKEN: ${{secrets.SRCCLR_API_TOKEN}}
     - uses: actions/upload-artifact@v1
@@ -120,3 +120,12 @@ jobs:
     steps:
       - name: Deploy docker image to staging environment
         run: echo "Docker container deployed to staging"
+
+  start_dast_scan:
+    name: Schedule dast scan to run
+    needs: deploy_application
+    runs-on: ubuntu-latest
+    container:
+      image: docker://wasptree/veracode-dast-trigger:latest
+    - name: Trigger the dast scan
+      run: veracode-dast-trigger -vid {{$secrets.VID}} -vkey {{secrets.VKEY}}  -scan verademo_web
