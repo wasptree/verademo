@@ -76,6 +76,7 @@ jobs:
     steps:
       - name: Store API credentials for HMAC Signing
         run: | 
+          mkdir ~/.veracode
           cat > ~/.veracode/credentials << EOF
           [default]
           veracode_api_key_id = ${{secrets.VID}}
