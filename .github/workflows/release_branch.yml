@@ -84,8 +84,9 @@ jobs:
           EOF
       - name: Generate SBOM
         run: |
-          GUID=$(http --auth-type=veracode_hmac GET https://api.veracode.com/appsec/v1/applications?name=verademo_github | jq '._embedded.applications[0].guid')
+          GUID=$(http --auth-type=veracode_hmac GET https://api.veracode.com/appsec/v1/applications?name=verademo_github | jq -r '._embedded.applications[0].guid')
           http --auth-type=veracode_hmac GET https://api.veracode.com/srcclr/sbom/v1/targets/$GUID/cyclonedx?type=application > verademo_github_sbom.json
+          stat verademo_github_sbom.json && head verademo_github_sbom.json  
       - uses: actions/upload-artifact@v1
         with:
           name: verademo_github_sbom
@@ -93,9 +94,27 @@ jobs:
 
   build_container:
     name: Build docker container
+    needs: static_analysis
     runs-on: ubuntu-latest
     steps:
       - name: Build new container image
         run: echo "built new container"
   
-
+  scan_container:
+    runs-on: ubuntu-latest
+    needs: build_container
+    steps:
+    - uses: actions/checkout@v2
+    - run: curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan --image wasptree/verademo-web
+      env:
+        SRCCLR_API_TOKEN: ${{secrets.SRCCLR_API_TOKEN}}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: SCAContainerResults
+        path: sca_output.txt
+  
+  deploy_application:
+    name: Deploy application to staging
+    runs-on: ubuntu-latest
+    needs: scan_container
+    - run: echo "Docker container deployed to staging"
