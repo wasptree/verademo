@@ -55,7 +55,6 @@ jobs:
       name: Pipeline Scan
       needs: build_app
       runs-on: ubuntu-latest
-      name: pipeline scan
 
       steps:
         - name: checkout repo
