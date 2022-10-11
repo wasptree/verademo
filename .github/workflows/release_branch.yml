@@ -64,8 +64,8 @@ jobs:
           appname: 'verademo_github'
           createprofile: false
           filepath: 'target/verademo.war'
-          vid: '${{ secrets.VID }}'
-          vkey: '${{ secrets.VKEY }}'
+          vid: '${{secrets.VID}}'
+          vkey: '${{secrets.VKEY}}'
 
   create_sbom:
     name: Generate SBOM file
@@ -78,8 +78,8 @@ jobs:
         run: | 
           cat > ~/.veracode/credentials << EOF
           [default]
-          veracode_api_key_id = ${{VID}}
-          veracode_api_key_secret = ${{VKEY}
+          veracode_api_key_id = ${{secrets.VID}}
+          veracode_api_key_secret = ${{secrets.VKEY}
           EOF
       - name: Generate SBOM
         run: |
