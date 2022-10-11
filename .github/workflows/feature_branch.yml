@@ -71,6 +71,12 @@ jobs:
             vid: ${{secrets.VID}}
             vkey: ${{secrets.VKEY}}
             file: "verademo.war"
+      
+        - name: Store filtered results
+          uses: actions/upload-artifact@v1
+          with:
+            name: filtered_results
+            path: filtered_results.json
 
   import-findings-to-code-scanning-alerts:
     needs: pipeline_scan
@@ -97,17 +103,17 @@ jobs:
         with:
           sarif_file: veracode-results.sarif
 
-  import-issues:
+  import-policy-flaws:
     needs: pipeline_scan
     runs-on: ubuntu-latest
     steps:
-      - name: get scan results
+      - name: get flaw file
         uses: actions/download-artifact@v2
         with:
-          name: filtered-results
+          name: Veracode Pipeline-Scan Results
+          path: /tmp
 
       - name: import flaws as issues
-        uses: buzzcode/veracode-flaws-to-issues@v1
+        uses: julz0815/veracode-flaws-to-issues@beta-0.0.103
         with:
-          scan-results-json: 'filtered_results.json'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          scan-results-json: '/tmp/filtered_results.json'

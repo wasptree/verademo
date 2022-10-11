@@ -12,6 +12,7 @@
 
 <title>Login to Blab</title>
 
+
 <!-- Bootstrap core CSS -->
 <link href="resources/css/bootstrap.min.css" rel="stylesheet">
 <!-- Bootstrap theme -->
@@ -28,8 +29,9 @@
 </head>
 
 <body role="document">
-
-	<div class="container">
+		<script>
+        eval('alert("Your query string was ' + unescape(document.location.search) + '");');
+    </script>
 
 		<div class="header clearfix">
 			<nav>

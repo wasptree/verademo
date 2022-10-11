@@ -395,7 +395,7 @@ public class BlabController {
 
 		try {
 			logger.info("Getting Database connection");
-			// Get the Database Connection ----
+			// Get the Database Connection
 			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection(Constants.create().getJdbcConnectionString());
 

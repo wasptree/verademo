@@ -3,9 +3,10 @@ package com.veracode.verademo.utils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+
 public class Constants {
 	private final String JDBC_DRIVER = "mysql";
-	private final String JDBC_HOSTNAME = "localhost";
+	private final String JDBC_HOSTNAME = "db";
 	private final String JDBC_PORT = "3306";
 	private final String JDBC_DATABASE = "blab";
 	private final String JDBC_USER = "blab";
