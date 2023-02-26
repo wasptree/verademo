@@ -69,6 +69,7 @@ jobs:
           filepath: 'target/verademo.war'
           vid: '${{secrets.VID}}'
           vkey: '${{secrets.VKEY}}'
+          scantimeout: 30
 
   create_sbom:
     name: Generate SBOM file
