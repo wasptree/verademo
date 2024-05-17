@@ -8,6 +8,20 @@ on:
 
 jobs:
   # This step will build the maven application
+
+  print-env-vars:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Print environment variables
+        run: |
+          echo "GITHUB_REPOSITORY: ${{ github.repository }}"
+          echo "GITHUB_REF: ${{ github.ref }}"
+          echo "GITHUB_SHA: ${{ github.sha }}"
+  
   build_app:
     name: Build Application with Maven
     runs-on: ubuntu-latest
